@@ -1,0 +1,12 @@
+{
+  "name": "l-comedy-project",
+  "type": "module",
+  "version": "0.1.0",
+  "workspaces": [
+    "packages/*",
+    "examples/*"
+  ],
+  "scripts": {
+    "build-jest-preset": "npm -w l-comedy-jest-preset run build"
+  }
+}
