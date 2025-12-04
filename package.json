@@ -7,6 +7,6 @@
     "examples/*"
   ],
   "scripts": {
-    "build-jest-preset": "npm -w l-comedy-jest-preset run build"
+    "build-jest-preset": "npm -w @l-comedy/jest-preset run build"
   }
 }

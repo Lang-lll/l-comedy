@@ -1,5 +1,5 @@
 {
-  "name": "l-comedy-jest-preset",
+  "name": "@l-comedy/jest-preset",
   "version": "0.1.0",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
