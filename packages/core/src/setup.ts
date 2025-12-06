@@ -1,8 +1,11 @@
 import path from 'path'
 import { generateEntryFile } from './utils/generateEntryFile'
+import createLComedyPluginAppConfig from './plugins/app-config'
+import type { Configuration as RSPackConfig } from '@rspack/core'
 
 import type {
   UserConfig,
+  SetupConfig,
   SetupOptions,
   SetupConfigPlugin,
   LComedyPlugin,
@@ -10,15 +13,28 @@ import type {
 } from './types'
 
 export async function setup(userConfig: UserConfig, options: SetupOptions) {
+  const isProd = process.env.NODE_ENV === 'production'
+  const workDir = '.comedy'
+  const sourceDir = userConfig.sourceDir || 'src'
   const baseConfig: SetupConfigPlugin = {
-    isProd: process.env.NODE_ENV === 'production',
+    isProd,
     root: options.root,
-    workDir: options.workDir,
-    sourceDir: options.sourceDir,
+    workDir: workDir,
+    workPath: path.posix.join(options.root, workDir),
+    sourceDir: sourceDir,
+    sourcePath: path.posix.join(options.root, sourceDir),
     userConfig,
   }
 
-  const plugins: LComedyPlugin[] = []
+  const plugins: LComedyPlugin[] = [createLComedyPluginAppConfig()]
+
+  for (const plugin of userConfig.plugins) {
+    if (typeof plugin === 'string') {
+      plugins.push(require(`./plugins/${plugin}`).default())
+    } else if (typeof plugin === 'object') {
+      plugins.push(plugin)
+    }
+  }
 
   const modifiers: EntryModifier[] = []
 
@@ -37,4 +53,27 @@ export async function setup(userConfig: UserConfig, options: SetupOptions) {
     modifiers,
     path.posix.join(baseConfig.root, baseConfig.workDir)
   )
+
+  const setupConfig: SetupConfig = {
+    ...baseConfig,
+    plugins,
+  }
+
+  let rspackConfig: RSPackConfig = {
+    mode: isProd ? 'production' : 'development',
+    resolve: {
+      extensions: ['.ts', '.tsx', '.js', '.jsx'],
+      alias: {
+        '@': setupConfig.sourcePath,
+      },
+    },
+  }
+
+  for (const plugin of plugins) {
+    if (plugin.rspackConfig) {
+      rspackConfig = await plugin.rspackConfig(rspackConfig, setupConfig)
+    }
+  }
+
+  return rspackConfig
 }

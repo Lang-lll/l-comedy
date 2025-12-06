@@ -8,6 +8,9 @@ export interface UserConfig {
   }
   plugins: Array<'route' | LComedyPlugin>
   rspackConfig?: RSPackConfig
+  sourceDir?: string
+  output?: string
+  publicDir?: string
 }
 
 export interface LComedyPlugin {
@@ -16,7 +19,10 @@ export interface LComedyPlugin {
   modifyEntry?: (
     service: SetupConfigPlugin
   ) => EntryModifier | Promise<EntryModifier>
-  config?: (config: SetupConfig) => SetupConfig | Promise<SetupConfig>
+  rspackConfig?: (
+    rspackConfig: RSPackConfig,
+    setupConfig: SetupConfig
+  ) => RSPackConfig | Promise<RSPackConfig>
   runtimeExports?: string[]
 }
 
@@ -49,6 +55,8 @@ export interface SetupConfig {
   plugins: LComedyPlugin[]
   workDir: string
   sourceDir: string
+  workPath: string
+  sourcePath: string
 }
 
 export type SetupConfigPlugin = Omit<SetupConfig, 'plugins'>
@@ -64,6 +72,4 @@ export interface EntryModifier {
 
 export interface SetupOptions {
   root: string
-  workDir: string
-  sourceDir: string
 }
