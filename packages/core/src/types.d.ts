@@ -6,7 +6,7 @@ export interface UserConfig {
   route?: {
     routes?: RouteConfig[]
   }
-  plugins: Array<'route' | LComedyPlugin>
+  plugins?: Array<'route' | LComedyPlugin>
   rspackConfig?: RSPackConfig
   sourceDir?: string
   output?: string
@@ -71,5 +71,6 @@ export interface EntryModifier {
 }
 
 export interface SetupOptions {
+  isProd: boolean
   root: string
 }

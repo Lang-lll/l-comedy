@@ -1,6 +1,6 @@
 import fs from 'fs-extra'
 import path from 'path'
-import type { EntryModifier } from '../types'
+import type { EntryModifier } from '../../types'
 
 export async function generateEntryFile(
   modifiers: EntryModifier[],
@@ -36,8 +36,11 @@ import { createRoot } from 'react-dom/client';
 
   let renderCode = `function render() {
   const rootContainer = document.getElementById('root');
-  const root = createRoot(rootContainer);
-  root.render(${appCode});
+
+  if (rootContainer) {
+    const root = createRoot(rootContainer);
+    root.render(${appCode});
+  }
 }`
 
   modifiers.forEach((m) => {

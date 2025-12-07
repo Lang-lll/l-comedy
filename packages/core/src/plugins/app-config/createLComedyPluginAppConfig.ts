@@ -1,6 +1,6 @@
 import path from 'path'
 import MiniCssExtractPlugin from 'mini-css-extract-plugin'
-import CopyWebpackPlugin from 'copy-webpack-plugin'
+// import CopyWebpackPlugin from 'copy-webpack-plugin'
 import type { Configuration as RSPackConfig } from '@rspack/core'
 import type { LComedyPlugin } from '../../types'
 
@@ -18,14 +18,31 @@ export function createLComedyPluginAppConfig(): LComedyPlugin {
             setupConfig.userConfig.output || 'dist'
           ),
           filename: setupConfig.isProd
-            ? 'js/[name].[contenthash:8].js'
-            : 'js/[name].js',
-          publicPath: '/',
+            ? 'static/js/[name].[contenthash:8].js'
+            : 'static/js/[name].js',
+          clean: true,
         },
         module: {
           ...rspackConfig.module,
           rules: [
             ...(rspackConfig.module?.rules || []),
+            {
+              test: /\.(ts|tsx)$/,
+              exclude: /node_modules/,
+              use: [
+                {
+                  loader: require.resolve('ts-loader'),
+                  options: {
+                    transpileOnly: true,
+                    compilerOptions: {
+                      paths: {
+                        '@/*': ['src/*'],
+                      },
+                    },
+                  },
+                },
+              ],
+            },
             {
               test: /\.(css|less)$/,
               use: [
@@ -38,8 +55,8 @@ export function createLComedyPluginAppConfig(): LComedyPlugin {
                     modules: {
                       auto: true,
                       localIdentName: setupConfig.isProd
-                        ? '[hash:base64:8]'
-                        : '[path][name]__[local]--[hash:base64:5]',
+                        ? 'static/css/[hash:base64:8]'
+                        : 'static/css/[path][name]__[local]--[hash:base64:5]',
                       exportLocalsConvention: 'camelCaseOnly',
                     },
                   },
@@ -63,14 +80,17 @@ export function createLComedyPluginAppConfig(): LComedyPlugin {
           ...(rspackConfig.plugins || []),
           ...(setupConfig.isProd
             ? [
-                new CopyWebpackPlugin({
+                /*new CopyWebpackPlugin({
                   patterns: [
                     {
-                      from: 'public',
+                      from: path.resolve(setupConfig.root, publicDir),
                       to: '.',
+                      globOptions: {
+                        dot: false,
+                      },
                     },
                   ],
-                }),
+                }),*/
               ]
             : []),
         ],
@@ -79,10 +99,11 @@ export function createLComedyPluginAppConfig(): LComedyPlugin {
       if (!setupConfig.isProd) {
         newConfig.devServer = {
           ...rspackConfig.devServer,
+          port: setupConfig.userConfig.port,
           hot: true,
           historyApiFallback: true,
           static: {
-            directory: path.posix.join(setupConfig.root, publicDir),
+            directory: publicDir,
           },
         }
       }
