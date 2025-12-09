@@ -1,9 +1,8 @@
 import { Outlet } from 'react-router'
-
 export default function Page() {
   return (
     <div>
-      <div>Home</div>
+      <div>Child</div>
       <Outlet />
     </div>
   )

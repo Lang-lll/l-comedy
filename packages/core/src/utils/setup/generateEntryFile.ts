@@ -32,6 +32,10 @@ import { createRoot } from 'react-dom/client';
     }
   })
 
+  appCode = `<React.StrictMode>
+  ${appCode}
+</React.StrictMode>`
+
   let renderCode = `function render() {
   const rootContainer = document.getElementById('${
     setupConfig.userConfig.html?.rootId || 'root'

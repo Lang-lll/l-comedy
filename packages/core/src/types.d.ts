@@ -5,6 +5,7 @@ export interface UserConfig {
   port?: number
   html?: HtmlConfig
   route?: {
+    basename?: string
     routes?: RouteConfig[]
   }
   plugins?: Array<'route' | LComedyPlugin>
@@ -16,9 +17,9 @@ export interface UserConfig {
 
 export interface LComedyPlugin {
   name: string
-  generateFiles?: (service: SetupConfigPlugin) => Promise<void> | viod
+  generateFiles?: (setupConfig: SetupConfigPlugin) => Promise<void> | viod
   modifyEntry?: (
-    service: SetupConfigPlugin
+    setupConfig: SetupConfigPlugin
   ) => EntryModifier | Promise<EntryModifier>
   rspackConfig?: (
     rspackConfig: RSPackConfig,
@@ -29,7 +30,7 @@ export interface LComedyPlugin {
 
 export interface RouteConfig {
   path: string
-  component?: string
+  component: string
   children?: RouteConfig[]
   lazy?: boolean
 }

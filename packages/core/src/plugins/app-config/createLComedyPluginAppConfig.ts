@@ -13,6 +13,7 @@ export function createLComedyPluginAppConfig(): LComedyPlugin {
         ...rspackConfig,
         entry: path.posix.join(setupConfig.workPath, 'entry.tsx'),
         output: {
+          publicPath: '/',
           path: path.posix.join(
             setupConfig.root,
             setupConfig.userConfig.output || 'dist'
@@ -103,6 +104,7 @@ export function createLComedyPluginAppConfig(): LComedyPlugin {
           hot: true,
           historyApiFallback: true,
           static: {
+            publicPath: '/',
             directory: publicDir,
           },
         }

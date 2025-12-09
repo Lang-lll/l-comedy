@@ -1,3 +1,4 @@
+import fs from 'fs-extra'
 import path from 'path'
 import { generateEntryFile } from './utils/setup/generateEntryFile'
 import createLComedyPluginAppConfig from './plugins/app-config'
@@ -34,11 +35,16 @@ export async function setup(userConfig: UserConfig, options: SetupOptions) {
 
   for (const plugin of userConfig.plugins || []) {
     if (typeof plugin === 'string') {
-      plugins.push(require(`./plugins/${plugin}`).default())
+      plugins.push(
+        require(path.posix.join(__dirname, `./plugins/${plugin}`)).default()
+      )
     } else if (typeof plugin === 'object') {
       plugins.push(plugin)
     }
   }
+
+  fs.ensureDirSync(baseConfig.workPath)
+  fs.emptyDirSync(baseConfig.workPath)
 
   const modifiers: EntryModifier[] = []
 
