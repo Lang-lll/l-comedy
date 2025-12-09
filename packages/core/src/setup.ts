@@ -1,6 +1,7 @@
 import path from 'path'
 import { generateEntryFile } from './utils/setup/generateEntryFile'
 import createLComedyPluginAppConfig from './plugins/app-config'
+import createLComedyPluginHtml from './plugins/html'
 import type { Configuration as RSPackConfig } from '@rspack/core'
 
 import type {
@@ -26,7 +27,10 @@ export async function setup(userConfig: UserConfig, options: SetupOptions) {
     userConfig,
   }
 
-  const plugins: LComedyPlugin[] = [createLComedyPluginAppConfig()]
+  const plugins: LComedyPlugin[] = [
+    createLComedyPluginAppConfig(),
+    createLComedyPluginHtml(),
+  ]
 
   for (const plugin of userConfig.plugins || []) {
     if (typeof plugin === 'string') {
@@ -49,15 +53,16 @@ export async function setup(userConfig: UserConfig, options: SetupOptions) {
     }
   }
 
-  await generateEntryFile(
-    modifiers,
-    path.posix.join(baseConfig.root, baseConfig.workDir)
-  )
-
   const setupConfig: SetupConfig = {
     ...baseConfig,
     plugins,
   }
+
+  await generateEntryFile(
+    modifiers,
+    path.posix.join(baseConfig.root, baseConfig.workDir),
+    setupConfig
+  )
 
   let rspackConfig: RSPackConfig = {
     mode: isProd ? 'production' : 'development',

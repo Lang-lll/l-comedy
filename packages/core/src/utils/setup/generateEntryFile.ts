@@ -1,10 +1,11 @@
 import fs from 'fs-extra'
 import path from 'path'
-import type { EntryModifier } from '../../types'
+import type { EntryModifier, SetupConfig } from '../../types'
 
 export async function generateEntryFile(
   modifiers: EntryModifier[],
-  targetDir: string
+  targetDir: string,
+  setupConfig: SetupConfig
 ) {
   let entryCode = `import React from 'react';
 import { createRoot } from 'react-dom/client';
@@ -20,22 +21,21 @@ import { createRoot } from 'react-dom/client';
     if (m.beforeRender) {
       entryCode += m.beforeRender + '\n'
     }
-  })
-
-  modifiers.forEach((m) => {
-    if (m.appRender) {
-      appCode = m.appRender(appCode)
+    if (m.app) {
+      appCode = m.app(appCode)
     }
   })
 
   modifiers.forEach((m) => {
-    if (m.appWrapRender) {
-      appCode = m.appWrapRender(appCode)
+    if (m.appWrap) {
+      appCode = m.appWrap(appCode)
     }
   })
 
   let renderCode = `function render() {
-  const rootContainer = document.getElementById('root');
+  const rootContainer = document.getElementById('${
+    setupConfig.userConfig.html?.rootId || 'root'
+  }');
 
   if (rootContainer) {
     const root = createRoot(rootContainer);
@@ -43,13 +43,20 @@ import { createRoot } from 'react-dom/client';
   }
 }`
 
+  let renderRunCode = `render();`
+
   modifiers.forEach((m) => {
     if (m.render) {
       renderCode = m.render(renderCode)
     }
+    if (m.renderRun) {
+      renderRunCode = m.renderRun(renderCode)
+    }
   })
 
   entryCode += renderCode + '\n'
+
+  entryCode += renderRunCode + '\n'
 
   // 插入后置代码
   modifiers.forEach((m) => {

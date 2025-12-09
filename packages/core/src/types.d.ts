@@ -1,4 +1,5 @@
 import type { Configuration as RSPackConfig } from '@rspack/core'
+import type { Options as HtmlWebpackOptions } from 'html-webpack-plugin'
 
 export interface UserConfig {
   port?: number
@@ -15,7 +16,7 @@ export interface UserConfig {
 
 export interface LComedyPlugin {
   name: string
-  generateFiles?: (service: SetupConfigPlugin) => Promise<void>
+  generateFiles?: (service: SetupConfigPlugin) => Promise<void> | viod
   modifyEntry?: (
     service: SetupConfigPlugin
   ) => EntryModifier | Promise<EntryModifier>
@@ -37,15 +38,10 @@ export interface HtmlConfig {
   title?: string
   rootId?: string
   headTags?: string[]
-  bodyTags?: string[]
-  // 用户自定义的模板数据
-  templateData?: Record<string, any>
-  // html-webpack-plugin 配置
-  htmlWebpackOptions?: {
-    filename?: string
-    minify?: boolean | any
-    inject?: boolean | 'head' | 'body'
-  }
+  bodyBeforeTags?: string[]
+  bodyAfterTags?: string[]
+  htmlWebpackOptions?: HtmlWebpackOptions
+  htmlTemplateParametersData?: Record<string, any>
 }
 
 export interface SetupConfig {
@@ -65,9 +61,10 @@ export interface EntryModifier {
   imports?: string[]
   beforeRender?: string
   afterRender?: string
-  appRender?: (app: string) => string
-  appWrapRender?: (app: string) => string
+  app?: (app: string) => string
+  appWrap?: (app: string) => string
   render?: (render: string) => string
+  renderRun?: (renderRun: string) => string
 }
 
 export interface SetupOptions {
