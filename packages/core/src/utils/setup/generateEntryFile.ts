@@ -7,13 +7,22 @@ export async function generateEntryFile(
   targetDir: string,
   setupConfig: SetupConfig
 ) {
-  let entryCode = `import React from 'react';
+  const allImports = new Set<string>()
+  const allReactImports = new Set<string>()
+  modifiers.forEach((m) => {
+    m.imports?.forEach((i) => allImports.add(i))
+    m.reactImports?.forEach((i) => allReactImports.add(i))
+  })
+
+  let appCode = '<div />'
+  let entryCode = `import React${
+    allReactImports.size >= 0
+      ? `, { ${Array.from(allReactImports).join(', ')} }`
+      : ''
+  } from 'react';
 import { createRoot } from 'react-dom/client';
 `
-  let appCode = '<div />'
 
-  const allImports = new Set<string>()
-  modifiers.forEach((m) => m.imports?.forEach((i) => allImports.add(i)))
   entryCode += Array.from(allImports).join('\n') + '\n'
 
   // 插入前置代码

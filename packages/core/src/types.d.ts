@@ -30,6 +30,7 @@ export interface LComedyPlugin {
 
 export interface RouteConfig {
   path: string
+  index?: boolean
   component: string
   children?: RouteConfig[]
   lazy?: boolean
@@ -60,6 +61,7 @@ export type SetupConfigPlugin = Omit<SetupConfig, 'plugins'>
 
 export interface EntryModifier {
   imports?: string[]
+  reactImports?: string[]
   beforeRender?: string
   afterRender?: string
   app?: (app: string) => string

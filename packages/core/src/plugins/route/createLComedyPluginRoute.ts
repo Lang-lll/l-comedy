@@ -20,56 +20,55 @@ export function createLComedyPluginRoute(): LComedyPlugin {
                 ? `const Component${componentIndex} = lazy(() => import('${route.component}'))`
                 : `import Component${componentIndex} from '${route.component}'`
             )
-            return `{ path: '${
+            return `<Route path="${
               route.path
-            }', element: <Component${componentIndex} />${
+            }" element={<Component${componentIndex} />}${
+              route.index ? ' index' : ''
+            }${
               route.children
-                ? `,
-    children: [
-      ${computeRoutesCode(route.children)}
-]`
-                : ''
-            } }`
+                ? `>
+  ${computeRoutesCode(route.children)}
+</Route>`
+                : ' />'
+            }`
           })
-          .join(',\n')}`
+          .join('\n')}`
       }
 
-      let routesCode = `[
-${computeRoutesCode(routes)}
-]`
+      let routesCode = `<Routes>
+  ${computeRoutesCode(routes)}
+</Routes>`
 
       fs.outputFileSync(
-        path.posix.join(setupConfig.workDir, 'runtimes', 'route/routes.tsx'),
+        path.posix.join(setupConfig.workDir, 'runtimes', 'route/AppRoutes.tsx'),
         `import { lazy } from 'react'
+import { Routes, Route } from 'react-router'
 ${importsCode.join('\n')}
-export default ${routesCode}`
-      )
 
-      fs.outputFileSync(
-        path.posix.join(
-          setupConfig.workDir,
-          'runtimes',
-          'route/createRouter.ts'
-        ),
-        `import { createBrowserRouter } from 'react-router'
-import routes from './routes'
-
-export default createBrowserRouter(routes${
-          setupConfig.userConfig.route?.basename
-            ? `, { basename: '${setupConfig.userConfig.route.basename}' }`
-            : ''
-        })`
+export default function AppRoutes() {
+  return (
+    ${routesCode}
+  )
+}`
       )
     },
-    /** Suspense */
-    modifyEntry() {
+    modifyEntry(setupConfig) {
       return {
         imports: [
-          "import { RouterProvider } from 'react-router'",
-          "import router from './runtimes/route/createRouter'",
+          "import { BrowserRouter } from 'react-router'",
+          "import AppRoutes from './runtimes/route/AppRoutes'",
         ],
+        appWrap(app) {
+          return `<BrowserRouter${
+            setupConfig.userConfig.route?.basename
+              ? ` basename="${setupConfig.userConfig.route.basename}"`
+              : ''
+          }>
+  ${app}
+</BrowserRouter>`
+        },
         app() {
-          return `<RouterProvider router={router} />`
+          return '<AppRoutes />'
         },
       }
     },
