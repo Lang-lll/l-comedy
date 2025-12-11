@@ -1,6 +1,5 @@
 import path from 'path'
-import MiniCssExtractPlugin from 'mini-css-extract-plugin'
-// import CopyWebpackPlugin from 'copy-webpack-plugin'
+import { CssExtractRspackPlugin, CopyRspackPlugin } from '@rspack/core'
 import type { Configuration as RSPackConfig } from '@rspack/core'
 import type { LComedyPlugin } from '../../types'
 
@@ -48,7 +47,7 @@ export function createLComedyPluginAppConfig(): LComedyPlugin {
               test: /\.(css|less)$/,
               use: [
                 setupConfig.isProd
-                  ? MiniCssExtractPlugin.loader
+                  ? CssExtractRspackPlugin.loader
                   : require.resolve('style-loader'),
                 {
                   loader: require.resolve('css-loader'),
@@ -57,7 +56,7 @@ export function createLComedyPluginAppConfig(): LComedyPlugin {
                       mode: 'local',
                       auto: true,
                       localIdentName: setupConfig.isProd
-                        ? 'static/css/[hash:base64:8]'
+                        ? '[local]--[hash:base64:8]'
                         : '[path][name]__[local]--[hash:base64:5]',
                       exportLocalsConvention: 'camelCaseOnly',
                       namedExport: false,
@@ -85,17 +84,18 @@ export function createLComedyPluginAppConfig(): LComedyPlugin {
           ...(rspackConfig.plugins || []),
           ...(setupConfig.isProd
             ? [
-                /*new CopyWebpackPlugin({
+                new CssExtractRspackPlugin({
+                  filename: 'static/css/[name].[contenthash:8].css',
+                  chunkFilename: 'static/css/[name].[contenthash:8].chunk.css',
+                }),
+                new CopyRspackPlugin({
                   patterns: [
                     {
-                      from: path.resolve(setupConfig.root, publicDir),
+                      from: publicDir,
                       to: '.',
-                      globOptions: {
-                        dot: false,
-                      },
                     },
                   ],
-                }),*/
+                }),
               ]
             : []),
         ],
