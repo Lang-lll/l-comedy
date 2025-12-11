@@ -49,24 +49,28 @@ export function createLComedyPluginAppConfig(): LComedyPlugin {
               use: [
                 setupConfig.isProd
                   ? MiniCssExtractPlugin.loader
-                  : 'style-loader',
+                  : require.resolve('style-loader'),
                 {
                   loader: require.resolve('css-loader'),
                   options: {
                     modules: {
+                      mode: 'local',
                       auto: true,
                       localIdentName: setupConfig.isProd
                         ? 'static/css/[hash:base64:8]'
-                        : 'static/css/[path][name]__[local]--[hash:base64:5]',
+                        : '[path][name]__[local]--[hash:base64:5]',
                       exportLocalsConvention: 'camelCaseOnly',
+                      namedExport: false,
+                      exportOnlyLocals: false,
                     },
+                    esModule: true,
                   },
                 },
                 {
                   loader: require.resolve('postcss-loader'),
                 },
                 {
-                  loader: 'less-loader',
+                  loader: require.resolve('less-loader'),
                   options: {
                     lessOptions: {
                       javascriptEnabled: true,

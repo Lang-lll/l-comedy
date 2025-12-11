@@ -64,6 +64,8 @@ export interface EntryModifier {
   reactImports?: string[]
   beforeRender?: string
   afterRender?: string
+  devNeedWatchAddPaths?: string[]
+  devNeedWatchChangePaths?: string[]
   app?: (app: string) => string
   appWrap?: (app: string) => string
   render?: (render: string) => string
