@@ -4,6 +4,7 @@ import { createHtmlFile } from './createHtmlFile'
 import { createTemplateParameters } from './createTemplateParameters'
 import type { LComedyPlugin } from '../../types'
 
+// TODO: 改成rspack插件
 export function createLComedyPluginHtml(): LComedyPlugin {
   return {
     name: 'l-comedy-plugin-html',

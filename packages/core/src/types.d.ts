@@ -1,5 +1,6 @@
 import type { Configuration as RSPackConfig } from '@rspack/core'
 import type { Options as HtmlWebpackOptions } from 'html-webpack-plugin'
+import type { TestConfig } from '../../jest-preset/dist'
 
 export interface UserConfig {
   port?: number
@@ -13,6 +14,7 @@ export interface UserConfig {
   sourceDir?: string
   output?: string
   publicDir?: string
+  test?: TestConfig
 }
 
 export interface LComedyPlugin {

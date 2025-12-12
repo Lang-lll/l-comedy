@@ -1,0 +1,33 @@
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "declaration": true,
+    "target": "es2015",
+    "useDefineForClassFields": true,
+    "lib": ["ES2020", "DOM"],
+    "module": "esnext",
+    "skipLibCheck": true,
+    "types": ["jest"],
+
+    /* Bundler mode */
+    "moduleResolution": "bundler",
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "allowImportingTsExtensions": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "moduleDetection": "force",
+    "noEmit": true,
+    "jsx": "react-jsx",
+
+    /* Linting */
+    "strict": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noFallthroughCasesInSwitch": true,
+
+    "paths": { "@/*": ["src/*"] }
+  },
+  "include": ["src/**/*", ".comedy/**/*"],
+  "exclude": ["node_modules", "dist"]
+}

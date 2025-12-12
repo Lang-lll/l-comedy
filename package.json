@@ -10,6 +10,7 @@
     "build": "npm -w @l-comedy/core run build",
     "build-jest-preset": "npm -w @l-comedy/jest-preset run build",
     "example:basic": "cd examples/basic && pnpm i && pnpm dev",
-    "build-example:basic": "cd examples/basic && pnpm i && pnpm build"
+    "build-example:basic": "cd examples/basic && pnpm i && pnpm build",
+    "test:jest-preset": "cd examples/jest-preset && pnpm i && pnpm test"
   }
 }

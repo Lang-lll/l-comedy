@@ -19,10 +19,10 @@ export function mergeJestConfig(
 }
 
 export function createJestConfig(
-  testConfig: TestConfig,
+  testConfig?: TestConfig,
   options?: CreateJestConfigOptions
 ) {
-  const { unit = {}, components = {}, common = {} } = testConfig
+  const { unit = {}, components = {}, common = {} } = testConfig || {}
   const sourceDir =
     typeof options?.sourceDir === 'string' ? options.sourceDir : 'src'
 
@@ -54,6 +54,7 @@ export function createJestConfig(
     collectCoverageFrom: [`<rootDir>/${sourceDir}/**/*.{ts,js}`, '!**/*.d.ts'],
   }
 
+  // TODO: 动态setupTests
   const defaultComponentsConfig: JestConfig.InitialOptions = {
     ...defaultCommonConfig,
     testEnvironment: 'jsdom',
