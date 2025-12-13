@@ -10,6 +10,23 @@
     "bin",
     "dist"
   ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Lang-lll/l-comedy"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "description": "通过配置快速创建react应用",
+  "keywords": [
+    "l-comedy",
+    "react",
+    "cli",
+    "config",
+    "rspack"
+  ],
+  "author": "lang-lll",
+  "license": "MIT",
   "scripts": {
     "build": "pnpm install && pnpm build-index && pnpm build-run && pnpm build-plugins",
     "build-index": "tsup src/index.ts --format cjs --dts --clean",
@@ -37,11 +54,10 @@
     "react-dom": "^18.0.0 || ^19.0.0"
   },
   "optionalDependencies": {
-    "@l-comedy/jest-preset": "workspace:*",
+    "@l-comedy/jest-preset": "^0.1.0",
     "react-router": "^7.0.0"
   },
   "devDependencies": {
-    "@l-comedy/jest-preset": "workspace:*",
     "@jest/types": "29.6.3",
     "@types/fs-extra": "^11.0.4",
     "@types/node": "^22.19.1",

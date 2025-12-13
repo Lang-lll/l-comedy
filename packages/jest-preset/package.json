@@ -1,8 +1,26 @@
 {
   "name": "@l-comedy/jest-preset",
+  "private": false,
   "version": "0.1.0",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "keywords": [
+    "l-comedy",
+    "jest",
+    "preset"
+  ],
+  "author": "lang-lll",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Lang-lll/l-comedy"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
   "scripts": {
     "build": "pnpm install && tsup src/index.ts --format cjs --dts --clean"
   },

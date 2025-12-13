@@ -1,5 +1,7 @@
+import styles from './HelloWorld.less'
+
 const HelloWorld = ({ name = 'World' }) => {
-  return <div>Hello, {name}!</div>
+  return <div className={styles.hello}>Hello, {name}!</div>
 }
 
 export default HelloWorld
