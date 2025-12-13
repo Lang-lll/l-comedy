@@ -1,5 +1,6 @@
 import path from 'path'
-import fs from 'fs'
+import fs from 'fs-extra'
+import { spawn } from 'child_process'
 import type { Config as JestConfig } from '@jest/types'
 
 export interface RunJestOptions {
@@ -11,9 +12,12 @@ export async function runJest(
   config: JestConfig.InitialOptions,
   options?: RunJestOptions
 ) {
+  const root = process.cwd().replace(/\\/g, '/')
+  const workDirPath = path.posix.join(root, '.comedy')
+
   // 生成临时jest配置
-  const configPath = path.join(process.cwd(), `jest.config.tmp.js`)
-  fs.writeFileSync(
+  const configPath = path.posix.join(workDirPath, `jest.config.tmp.cjs`)
+  fs.outputFileSync(
     configPath,
     `module.exports = ${JSON.stringify(config, null, 2)}`
   )
@@ -24,8 +28,9 @@ export async function runJest(
   if (options?.coverage) args.push('--coverage')
 
   // 执行jest
-  const { spawn } = require('child_process')
   const jestProcess = spawn('npx', ['jest', ...args], {
+    shell: true,
+    cwd: process.cwd(),
     stdio: 'inherit',
   })
 

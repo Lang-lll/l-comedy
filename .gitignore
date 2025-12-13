@@ -10,6 +10,8 @@ lerna-debug.log*
 node_modules
 dist
 *.local
+.comedy
+.npmrc
 
 # Editor directories and files
 .vscode/*

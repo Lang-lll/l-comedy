@@ -1,0 +1,120 @@
+import path from 'path'
+import { CssExtractRspackPlugin, CopyRspackPlugin } from '@rspack/core'
+import type { Configuration as RSPackConfig } from '@rspack/core'
+import type { LComedyPlugin } from '../../types'
+
+export function createLComedyPluginAppConfig(): LComedyPlugin {
+  return {
+    name: 'l-comedy-plugin-app-config',
+    rspackConfig(rspackConfig, setupConfig) {
+      const publicDir = setupConfig.userConfig.publicDir || 'public'
+      const newConfig: RSPackConfig = {
+        ...rspackConfig,
+        entry: path.posix.join(setupConfig.workPath, 'entry.tsx'),
+        output: {
+          publicPath: '/',
+          path: path.posix.join(
+            setupConfig.root,
+            setupConfig.userConfig.output || 'dist'
+          ),
+          filename: setupConfig.isProd
+            ? 'static/js/[name].[contenthash:8].js'
+            : 'static/js/[name].js',
+          clean: true,
+        },
+        module: {
+          ...rspackConfig.module,
+          rules: [
+            ...(rspackConfig.module?.rules || []),
+            {
+              test: /\.(ts|tsx)$/,
+              exclude: /node_modules/,
+              use: [
+                {
+                  loader: require.resolve('ts-loader'),
+                  options: {
+                    transpileOnly: true,
+                    compilerOptions: {
+                      paths: {
+                        '@/*': ['src/*'],
+                      },
+                    },
+                  },
+                },
+              ],
+            },
+            {
+              test: /\.(css|less)$/,
+              use: [
+                setupConfig.isProd
+                  ? CssExtractRspackPlugin.loader
+                  : require.resolve('style-loader'),
+                {
+                  loader: require.resolve('css-loader'),
+                  options: {
+                    modules: {
+                      mode: 'local',
+                      auto: true,
+                      localIdentName: setupConfig.isProd
+                        ? '[local]--[hash:base64:8]'
+                        : '[path][name]__[local]--[hash:base64:5]',
+                      exportLocalsConvention: 'camelCaseOnly',
+                      namedExport: false,
+                      exportOnlyLocals: false,
+                    },
+                    esModule: true,
+                  },
+                },
+                {
+                  loader: require.resolve('postcss-loader'),
+                },
+                {
+                  loader: require.resolve('less-loader'),
+                  options: {
+                    lessOptions: {
+                      javascriptEnabled: true,
+                    },
+                  },
+                },
+              ],
+            },
+          ],
+        },
+        plugins: [
+          ...(rspackConfig.plugins || []),
+          ...(setupConfig.isProd
+            ? [
+                new CssExtractRspackPlugin({
+                  filename: 'static/css/[name].[contenthash:8].css',
+                  chunkFilename: 'static/css/[name].[contenthash:8].chunk.css',
+                }),
+                new CopyRspackPlugin({
+                  patterns: [
+                    {
+                      from: publicDir,
+                      to: '.',
+                    },
+                  ],
+                }),
+              ]
+            : []),
+        ],
+      }
+
+      if (!setupConfig.isProd) {
+        newConfig.devServer = {
+          ...rspackConfig.devServer,
+          port: setupConfig.userConfig.port,
+          hot: true,
+          historyApiFallback: true,
+          static: {
+            publicPath: '/',
+            directory: publicDir,
+          },
+        }
+      }
+
+      return newConfig
+    },
+  }
+}

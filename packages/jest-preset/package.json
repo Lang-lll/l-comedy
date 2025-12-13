@@ -1,0 +1,49 @@
+{
+  "name": "@l-comedy/jest-preset",
+  "private": false,
+  "version": "0.1.0",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "keywords": [
+    "l-comedy",
+    "jest",
+    "preset"
+  ],
+  "author": "lang-lll",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Lang-lll/l-comedy"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "build": "pnpm install && tsup src/index.ts --format cjs --dts --clean"
+  },
+  "dependencies": {
+    "fs-extra": "^11.3.2",
+    "identity-obj-proxy": "^3.0.0",
+    "jest-environment-jsdom": "^29.0.0",
+    "jest-transform-stub": "^2.0.0",
+    "ts-jest": "29.4.6"
+  },
+  "peerDependencies": {
+    "jest": "29.7.0"
+  },
+  "optionalDependencies": {
+    "@testing-library/jest-dom": "6.9.1",
+    "@testing-library/react": "16.3.0",
+    "@types/jest": "29.5.14"
+  },
+  "devDependencies": {
+    "@jest/types": "29.6.3",
+    "@types/fs-extra": "^11.0.4",
+    "@types/node": "^22.19.1",
+    "tsup": "^8.5.1",
+    "typescript": "^5.9.3"
+  }
+}

@@ -1,0 +1,66 @@
+{
+  "name": "@l-comedy/core",
+  "version": "0.1.0",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "bin": {
+    "lcomedy": "bin/lcomedy.js"
+  },
+  "files": [
+    "bin",
+    "dist"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Lang-lll/l-comedy"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "description": "通过配置快速创建react应用",
+  "keywords": [
+    "l-comedy",
+    "react",
+    "cli",
+    "config",
+    "rspack"
+  ],
+  "author": "lang-lll",
+  "license": "MIT",
+  "scripts": {
+    "build": "pnpm install && pnpm build-index && pnpm build-run && pnpm build-plugins",
+    "build-index": "tsup src/index.ts --format cjs --dts --clean",
+    "build-run": "tsup src/run.ts --format cjs --dts",
+    "build-plugins": "tsup src/plugins --format cjs --dts --outDir dist/plugins"
+  },
+  "dependencies": {
+    "@rspack/cli": "^1.6.6",
+    "@rspack/core": "^1.6.6",
+    "@rspack/dev-server": "^1.1.4",
+    "chokidar": "^5.0.0",
+    "commander": "^14.0.2",
+    "css-loader": "7.1.2",
+    "esbuild": "^0.27.1",
+    "fs-extra": "^11.3.2",
+    "html-webpack-plugin": "^5.6.5",
+    "less": "4.4.2",
+    "less-loader": "^10.0.0",
+    "postcss-loader": "8.2.0",
+    "style-loader": "4.0.0",
+    "ts-loader": "^9.5.4"
+  },
+  "peerDependencies": {
+    "react": "^18.0.0 || ^19.0.0",
+    "react-dom": "^18.0.0 || ^19.0.0"
+  },
+  "optionalDependencies": {
+    "@l-comedy/jest-preset": "^0.1.0",
+    "react-router": "^7.0.0"
+  },
+  "devDependencies": {
+    "@jest/types": "29.6.3",
+    "@types/fs-extra": "^11.0.4",
+    "@types/node": "^22.19.1",
+    "tsup": "^8.5.1"
+  }
+}
