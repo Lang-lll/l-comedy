@@ -9,7 +9,7 @@ lerna-debug.log*
 
 node_modules
 dist
-libs
+lib
 *.local
 .comedy
 .npmrc

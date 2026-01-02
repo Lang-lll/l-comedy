@@ -18,7 +18,7 @@ export async function runTsup(options?: { config?: string }) {
     return
   }
 
-  const outDir = userConfig.tsup.outDir || 'libs'
+  const outDir = userConfig.tsup.outDir || 'lib'
   const outPath = path.posix.join(root, outDir)
 
   fs.ensureDirSync(outPath)
