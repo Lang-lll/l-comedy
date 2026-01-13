@@ -5,6 +5,7 @@ import createLComedyPluginAppConfig from './plugins/app-config'
 import createLComedyPluginHtml from './plugins/html'
 import createLComedyPluginPageLoading from './plugins/page-loading'
 import createLComedyPluginLayout from './plugins/layout'
+import createLComedyPluginGlobalCSS from './plugins/global-css'
 import type { Configuration as RSPackConfig } from '@rspack/core'
 
 import type {
@@ -35,6 +36,7 @@ export async function setup(userConfig: UserConfig, options: SetupOptions) {
     createLComedyPluginHtml(),
     createLComedyPluginLayout(),
     createLComedyPluginPageLoading(),
+    createLComedyPluginGlobalCSS(),
   ]
 
   for (const plugin of userConfig.plugins || []) {

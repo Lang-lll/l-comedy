@@ -1,0 +1,18 @@
+{
+  "name": "example-tsup",
+  "version": "0.1.0",
+  "scripts": {
+    "build": "lcomedy tsup"
+  },
+  "dependencies": {
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "react-router": "^7.0.0"
+  },
+  "devDependencies": {
+    "@l-comedy/core": "workspace:*",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "typescript": "^5.9.3"
+  }
+}

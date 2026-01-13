@@ -1,4 +1,5 @@
 import type { Configuration as RSPackConfig } from '@rspack/core'
+import type { Options as TsupOptions } from 'tsup'
 import type { Options as HtmlWebpackOptions } from 'html-webpack-plugin'
 import type { TestConfig } from '../../jest-preset/dist'
 
@@ -15,6 +16,7 @@ export interface UserConfig {
   output?: string
   publicDir?: string
   test?: TestConfig
+  tsup?: TsupConfig
 }
 
 export interface LComedyPlugin {
@@ -44,6 +46,7 @@ export interface HtmlConfig {
   headTags?: string[]
   bodyBeforeTags?: string[]
   bodyAfterTags?: string[]
+  metaViewport?: string
   htmlWebpackOptions?: HtmlWebpackOptions
   htmlTemplateParametersData?: Record<string, any>
 }
@@ -77,4 +80,15 @@ export interface EntryModifier {
 export interface SetupOptions {
   isProd: boolean
   root: string
+}
+
+export interface TsupConfig {
+  targets: TsupConfigTarget[]
+  outDir?: string
+  options?: Partial<Omit<TsupOptions, 'entry' | 'outDir'>>
+}
+
+export interface TsupConfigTarget {
+  entry: string
+  relativeOutDir?: string
 }

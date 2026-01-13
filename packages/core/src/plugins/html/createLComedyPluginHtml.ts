@@ -25,6 +25,7 @@ export function createLComedyPluginHtml(): LComedyPlugin {
               : false,
             cache: true,
             inject: true,
+            // TODO: 默认meta
             ...setupConfig.userConfig.html?.htmlWebpackOptions,
             templateParameters: {
               ...setupConfig.userConfig.html?.htmlTemplateParametersData,

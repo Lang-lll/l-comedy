@@ -13,6 +13,7 @@
     "publish-jest-preset": "npm -w @l-comedy/jest-preset publish",
     "example:basic": "cd examples/basic && pnpm i && pnpm dev",
     "build-example:basic": "cd examples/basic && pnpm i && pnpm build",
+    "build-example:tsup": "cd examples/tsup && pnpm i && pnpm build",
     "test-example:jest-preset": "cd examples/jest-preset && pnpm i && pnpm test"
   }
 }
