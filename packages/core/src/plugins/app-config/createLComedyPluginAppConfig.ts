@@ -15,7 +15,7 @@ export function createLComedyPluginAppConfig(): LComedyPlugin {
           publicPath: '/',
           path: path.posix.join(
             setupConfig.root,
-            setupConfig.userConfig.output || 'dist'
+            setupConfig.userConfig.output || 'dist',
           ),
           filename: setupConfig.isProd
             ? 'static/js/[name].[contenthash:8].js'
@@ -36,7 +36,9 @@ export function createLComedyPluginAppConfig(): LComedyPlugin {
                     transpileOnly: true,
                     compilerOptions: {
                       paths: {
+                        // TODO: 使用变量
                         '@/*': ['src/*'],
+                        '@@/*': ['.comedy/*'],
                       },
                     },
                   },
@@ -93,6 +95,7 @@ export function createLComedyPluginAppConfig(): LComedyPlugin {
                     {
                       from: publicDir,
                       to: '.',
+                      noErrorOnMissing: true,
                     },
                   ],
                 }),

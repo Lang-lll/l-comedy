@@ -5,7 +5,7 @@ import type { EntryModifier, SetupConfig } from '../../types'
 export async function generateEntryFile(
   modifiers: EntryModifier[],
   targetDir: string,
-  setupConfig: SetupConfig
+  setupConfig: SetupConfig,
 ) {
   const allImports = new Set<string>()
   const allReactImports = new Set<string>()
@@ -77,6 +77,17 @@ import { createRoot } from 'react-dom/client';
       entryCode += m.afterRender + '\n'
     }
   })
+
+  await fs.outputFile(
+    path.posix.join(targetDir, 'exports.ts'),
+    `${modifiers
+      .filter((item) => item.runtimeExports)
+      .map(
+        (item) =>
+          `${item.runtimeExports?.map((exportStr) => exportStr).join('\n')}`,
+      )
+      .join('\n')}`,
+  )
 
   await fs.outputFile(path.posix.join(targetDir, 'entry.tsx'), entryCode)
 }
