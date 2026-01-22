@@ -10,7 +10,11 @@ export interface UserConfig {
     basename?: string
     routes?: RouteConfig[]
   }
-  plugins?: Array<'route' | LComedyPlugin>
+  reduxToolkit?: {
+    /** 相对于@ */
+    slicesDir?: string
+  }
+  plugins?: Array<'route' | 'redux-toolkit' | LComedyPlugin>
   rspackConfig?: RSPackConfig
   sourceDir?: string
   output?: string
@@ -23,11 +27,11 @@ export interface LComedyPlugin {
   name: string
   generateFiles?: (setupConfig: SetupConfigPlugin) => Promise<void> | viod
   modifyEntry?: (
-    setupConfig: SetupConfigPlugin
+    setupConfig: SetupConfigPlugin,
   ) => EntryModifier | Promise<EntryModifier>
   rspackConfig?: (
     rspackConfig: RSPackConfig,
-    setupConfig: SetupConfig
+    setupConfig: SetupConfig,
   ) => RSPackConfig | Promise<RSPackConfig>
   runtimeExports?: string[]
 }
@@ -66,6 +70,7 @@ export type SetupConfigPlugin = Omit<SetupConfig, 'plugins'>
 
 export interface EntryModifier {
   imports?: string[]
+  runtimeExports?: string[]
   reactImports?: string[]
   beforeRender?: string
   afterRender?: string

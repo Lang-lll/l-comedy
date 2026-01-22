@@ -42,7 +42,7 @@ export async function setup(userConfig: UserConfig, options: SetupOptions) {
   for (const plugin of userConfig.plugins || []) {
     if (typeof plugin === 'string') {
       plugins.push(
-        require(path.posix.join(__dirname, `./plugins/${plugin}`)).default()
+        require(path.posix.join(__dirname, `./plugins/${plugin}`)).default(),
       )
     } else if (typeof plugin === 'object') {
       plugins.push(plugin)
@@ -73,7 +73,7 @@ export async function setup(userConfig: UserConfig, options: SetupOptions) {
   await generateEntryFile(
     modifiers,
     path.posix.join(baseConfig.root, baseConfig.workDir),
-    setupConfig
+    setupConfig,
   )
 
   let rspackConfig: RSPackConfig = {
@@ -82,6 +82,7 @@ export async function setup(userConfig: UserConfig, options: SetupOptions) {
       extensions: ['.ts', '.tsx', '.js', '.jsx'],
       alias: {
         '@': setupConfig.sourcePath,
+        '@@': setupConfig.workPath,
       },
     },
   }

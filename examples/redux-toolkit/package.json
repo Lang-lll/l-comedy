@@ -1,0 +1,22 @@
+{
+  "name": "example-redux-toolkit",
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "dev": "lcomedy dev",
+    "build": "lcomedy build"
+  },
+  "dependencies": {
+    "@reduxjs/toolkit": "^2.11.2",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "react-redux": "^9.2.0",
+    "react-router": "^7.0.0"
+  },
+  "devDependencies": {
+    "@l-comedy/core": "workspace:*",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "typescript": "^5.9.3"
+  }
+}
